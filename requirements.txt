@@ -1,0 +1,11 @@
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+six
+pyisbn
+shopifyAPI
+shopify
+numpy
+pandas
+paramiko
