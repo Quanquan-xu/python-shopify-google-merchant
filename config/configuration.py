@@ -240,8 +240,8 @@ def init_remote_files_downloader(shop_name_abbr):
         return downloaders
 
     elif shop_name_abbr == "ST":
-        # price_file_filter = time.strftime("%Y-%m-%d", time.localtime())
-        price_file_filter = "source_isbn_price\.db$"
+        price_file_filter = time.strftime("%Y-%m-%d", time.localtime())
+        # price_file_filter = "source_isbn_price\.db$"
 
         reference_file_filter = time.strftime("%Y%m%d", time.localtime())
         # reference_file_filter = '20200312.csv'
@@ -253,13 +253,13 @@ def init_remote_files_downloader(shop_name_abbr):
         #     "port": 22,
         #     "remote_dir": '/home/rsrnd/newused/sources'
         # }
-        # price2_downloader = {
-        #     "hostname": "10.40.0.152",
-        #     "username": "ubuntu",
-        #     "password": "ubuntu!",
-        #     "port": 22,
-        #     "remote_dir": '/home/ubuntu/newused/sources'
-        # }
+        price2_downloader = {
+            "hostname": "10.40.0.152",
+            "username": "ubuntu",
+            "password": "ubuntu!",
+            "port": 22,
+            "remote_dir": '/home/ubuntu/newused/sources'
+        }
 
         price_downloader = {
             "hostname": "10.40.0.150",
@@ -287,8 +287,8 @@ def init_remote_files_downloader(shop_name_abbr):
 
         downloaders = [
             # ("price1", price1_downloader, price_file_filter),
-            # ("price2", price2_downloader, price_file_filter),
-            ("price", price_downloader, price_file_filter),
+            ("price2", price2_downloader, price_file_filter),
+            # ("price", price_downloader, price_file_filter),
             ("reference", reference_downloader, reference_file_filter)
         ]
         return downloaders
