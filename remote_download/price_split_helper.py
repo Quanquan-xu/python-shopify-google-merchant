@@ -3,6 +3,7 @@ import pandas as pd
 import time
 import os
 import re
+import sys
 from config.configuration import get_sale_price, init_files_manager, price_special_case_manager, filter_price_data
 
 
@@ -92,6 +93,7 @@ class PriceSplitHelper:
         price_list_num = price_list.shape[0]
         reference_num = reference.shape[0]
         print("Price / Reference :  {} / {}".format(price_list_num, reference_num))
+        #sys.exit()
         mix_price_list = pd.DataFrame()
         for site, price_info in store_grouped:
             if not self.site_to_store_dict or not self.site_to_store_dict.get(site):
@@ -117,7 +119,7 @@ class PriceSplitHelper:
                 reference_price = reference.loc[:, ["product_id", "variant_id", "old_price", "quantity"]]
                 merged_null_zero_price = pd.merge(null_zero_list, reference_price, how="left", on=["product_id", "variant_id"])
                 merged_price_detail = pd.merge(price_detail, reference_price, how="left",
-                                               on=["product_id", "variant_id"])                
+                                               on=["product_id", "variant_id"])
 
                 # deal with old price missing data - no inventory info
                 merged_null_zero_price = price_special_case_manager(merged_null_zero_price, "OldPriceMissing")

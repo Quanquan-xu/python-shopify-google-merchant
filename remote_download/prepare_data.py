@@ -10,7 +10,8 @@ class PrepareData:
     @staticmethod
     def run(shop_name_abbr="ST", date_str=time.strftime("%Y%m%d", time.localtime())):
         target_dir = os.path.dirname(__file__) + '/download_files/ST'
-        price_file_filter = "^{}_{}_{}.+\.db$".format(shop_name_abbr, "price", date_str).lower()
+        #price_file_filter = "^{}_{}_{}.+\.db$".format(shop_name_abbr, "price", date_str).lower()
+        price_file_filter = "^{}_{}_{}.+newused\.csv$".format(shop_name_abbr, "price", date_str).lower()
         reference_file_filter = "^{}_{}_{}.+\.txt$".format(shop_name_abbr, "reference", date_str).lower()
 
         list_files = os.listdir(target_dir)
@@ -21,15 +22,27 @@ class PrepareData:
         reference = pandas.DataFrame(columns=reference_columns)
         for f in list_files:
             if re.search(r'{}'.format(price_file_filter), f):
-                database = Databases(os.path.join(target_dir, f))
-                tables = database.get_database_tables_name()
-                if len(tables) == 1:
-                    table = tables[0]
-                    database.set_delegate_table_name(table)
-                    results = database.query_table_info()
-                    data = pandas.DataFrame(results, columns=price_columns)
-                    data['condition'] = table.split("_")[1]
-                    price_list = price_list.append(data)
+                # database = Databases(os.path.join(target_dir, f))
+                # tables = database.get_database_tables_name()
+                # print(tables)
+                # print("#"*80)
+                # if len(tables) == 1:
+                #     table = tables[0]
+                #     database.set_delegate_table_name(table)
+                #     results = database.query_table_info()
+                #     data = pandas.DataFrame(results, columns=price_columns)
+                #     data['condition'] = table.split("_")[1]
+                #     price_list = price_list.append(data)
+                original_price = pandas.read_csv(os.path.join(target_dir, f), sep="\t")
+                original_price = original_price[
+                    ['asin', "price", "sku"]]
+                original_price['condition'] = original_price['sku'].apply(lambda x: "used" if x.split("-")[-1][1]=='0' else "new")
+                data = original_price[['asin', "price", "condition"]]
+                data["price"].fillna(0, inplace = True)
+                data.columns = price_columns
+                # print(data.shape[0])
+                # print("Hello")
+                price_list = price_list.append(data)
             elif re.search(r'{}'.format(reference_file_filter), f):
                 original_reference = pandas.read_csv(os.path.join(target_dir, f), sep="\t")
                 original_reference = original_reference[

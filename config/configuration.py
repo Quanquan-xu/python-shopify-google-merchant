@@ -199,7 +199,7 @@ def split_price_by_value(price_data, filter_name):
     group_two = plus_price_data.query("{} > 100 & {} <= 200".format(filter_name, filter_name))
     group_three = plus_price_data[plus_price_data[filter_name] > 200]
     groups = [
-        (1, group_null),
+        (-1, group_null),
         (0, abnormal_inventory),
         (1, group_zero),
         (2, group_one),
@@ -253,7 +253,7 @@ def init_remote_files_downloader(shop_name_abbr):
         #     "port": 22,
         #     "remote_dir": '/home/rsrnd/newused/sources'
         # }
-        price2_downloader = {
+        price_downloader = {
             "hostname": "10.40.0.152",
             "username": "ubuntu",
             "password": "ubuntu!",
@@ -261,13 +261,13 @@ def init_remote_files_downloader(shop_name_abbr):
             "remote_dir": '/home/ubuntu/newused/sources'
         }
 
-        price_downloader = {
-            "hostname": "10.40.0.150",
-            "username": "ubuntu",
-            "password": "ubuntu!",
-            "port": 22,
-            "remote_dir": '/home/ubuntu/st_seller_engine/datas/db/book'
-        }
+        # price_downloader = {
+        #     "hostname": "10.40.0.150",
+        #     "username": "ubuntu",
+        #     "password": "ubuntu!",
+        #     "port": 22,
+        #     "remote_dir": '/home/ubuntu/st_seller_engine/datas/db/book'
+        # }
 
         # reference_downloader = {
         #     "hostname": "10.40.0.151",
@@ -285,10 +285,14 @@ def init_remote_files_downloader(shop_name_abbr):
             "remote_dir": '/home/ubuntu/ecommerceapp/src/inven_site/stevensbooks'
         }
 
+        # downloaders = [
+        #     ("price1", price1_downloader, price_file_filter),
+        #     ("price2", price2_downloader, price_file_filter),
+        #     ("price", price_downloader, price_file_filter),
+        #     ("reference", reference_downloader, reference_file_filter)
+        # ]
         downloaders = [
-            # ("price1", price1_downloader, price_file_filter),
-            ("price2", price2_downloader, price_file_filter),
-            # ("price", price_downloader, price_file_filter),
+            ("price", price_downloader, price_file_filter),
             ("reference", reference_downloader, reference_file_filter)
         ]
         return downloaders
@@ -399,6 +403,7 @@ def init_remote_files_downloader(shop_name_abbr):
 
 
 def init_files_manager(root_path, shop_name_abbr, date_str):
+    #price_list_columns = ["id", "site", "isbn", "product_id", "variant_id", "sku", "basic_price", "price_note", "crawl_time"]
     price_list_columns = ["id", "site", "isbn", "product_id", "variant_id", "sku", "basic_price", "price_note", "crawl_time"]
     reference_list_columns = ["product_id", "variant_id", "sku", "condition_isbn", "old_price", "quantity", "filter"]
     remote_download_files_dir = os.path.join(root_path, "download_files", shop_name_abbr)

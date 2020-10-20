@@ -294,7 +294,7 @@ class ShopifyPriceUpdate:
         for group in groups:
             group_num, price_data = group
             print("group- {}  size- {}".format(group_num, price_data.shape[0]))
-            if group_num >= group_start:
+            if group_num >= group_start and group_num >=1:
                 if not price_data.empty:
                     if "sort_value" in columns:
                         price_data.sort_values("sort_value", inplace=True, ascending=False)
