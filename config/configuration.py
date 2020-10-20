@@ -199,7 +199,7 @@ def split_price_by_value(price_data, filter_name):
     group_two = plus_price_data.query("{} > 100 & {} <= 200".format(filter_name, filter_name))
     group_three = plus_price_data[plus_price_data[filter_name] > 200]
     groups = [
-        (-1, group_null),
+        (1, group_null),
         (0, abnormal_inventory),
         (1, group_zero),
         (2, group_one),
